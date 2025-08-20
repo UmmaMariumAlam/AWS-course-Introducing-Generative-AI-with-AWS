@@ -1,0 +1,51 @@
+import pandas as pd
+#import scikit
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.tree import plot_tree
+
+data = {
+      'CustomerID': range(1, 101),  # Unique ID for each customer
+      'Age': [20, 25, 30, 35, 40, 45, 50, 55, 60, 65]*10,  # Age of customers
+      'MonthlyCharge': [50, 60, 70, 80, 90, 100, 110, 120, 130, 140]*10,  # Monthly bill amount
+      'CustomerServiceCalls': [1, 2, 3, 4, 0, 1, 2, 3, 4, 0]*10,  # Number of customer service calls
+      'Churn': ['No', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'No', 'Yes']*10  # Churn status
+}
+df = pd.DataFrame(data)
+
+X = df.drop(['CustomerID', 'Churn'], axis=1)
+y = df['Churn']
+
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.2, random_state = 42)
+
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+accuracy = accuracy_score(y_test, predictions)
+print(f"Accuracy: {accuracy}")
+
+plt.figure(figsize = (12,8))
+plot_tree(
+    model,
+    filled = True, feature_names = ['Age', 'MonthlyCharge', 'CustomerServiceCalls'], class_names = ['No Churn', 'Churn']
+    )
+
+plt.title('Decision Tree for Predicting Customer Churn')
+plt.show()
+
+
+
+
+#description/method:
+#Step-by-Step Instructions Setup the Environment: 
+#1Import necessary libraries: Pandas for data manipulation, Scikit-learn for machine learning, and Matplotlib for visualization. 
+#2Create the Dataset: Use Python to create a synthetic dataset. We'll make a small dataset for simplicity. 
+#3Data Preparation: Split the data into features (X) and the target variable (y). Further split the dataset into training and testing sets. 
+#4Build the Decision Tree Model: Use Scikit-learn to create a DecisionTreeClassifier. 
+#5Train the model on the training data. 
+#6Evaluate the Model: Make predictions on the test set. Calculate the accuracy of the model. 
+#7Visualize the Decision Tree: Use Matplotlib to visualize how the decision tree makes decisions. 
+#8Discuss the Results: Interpret the decision tree. Discuss how it can be used by the company to reduce customer churn.
